@@ -21,22 +21,23 @@ namespace ScienceFileUploader.Data
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Result>().HasOne<File>(r => r.File).WithOne(f => f.Result)
-                .HasForeignKey<Result>(r => r.FileId).IsRequired();
+            modelBuilder.Entity<Result>()
+                .HasOne<File>(r => r.File)
+                .WithOne(f => f.Result)
+                .HasForeignKey<Result>(r => r.FileName)
+                .IsRequired();
+            
             modelBuilder.Entity<Value>()
                 .HasOne(v => v.File)
                 .WithMany(f => f.Values)
                 .HasPrincipalKey(f => f.Name)
-                .IsRequired();
-            modelBuilder.Entity<Value>()
-                .HasOne(v => v.File)
-                .WithMany(f => f.Values)
+                .IsRequired()
                 .HasForeignKey(v => v.FileName)
                 .IsRequired();
         }
         
         public DbSet<Value> Values { get; set; }
-        public DbSet<File> Clients { get; set; }
-        public DbSet<Result> Orders { get; set; }
+        public DbSet<File> Files { get; set; }
+        public DbSet<Result> Results { get; set; }
     }
 }

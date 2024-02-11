@@ -12,7 +12,7 @@ namespace ScienceFileUploader.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Clients",
+                name: "Files",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -23,12 +23,12 @@ namespace ScienceFileUploader.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
-                    table.UniqueConstraint("AK_Clients_Name", x => x.Name);
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                    table.UniqueConstraint("AK_Files_Name", x => x.Name);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "Results",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -43,15 +43,15 @@ namespace ScienceFileUploader.Migrations
                     MaxParameterValue = table.Column<int>(type: "INTEGER", nullable: false),
                     MinParameterValue = table.Column<int>(type: "INTEGER", nullable: false),
                     AmountOfExperiments = table.Column<int>(type: "INTEGER", nullable: false),
-                    FileId = table.Column<int>(type: "INTEGER", nullable: false)
+                    FileName = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.PrimaryKey("PK_Results", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Clients_FileId",
-                        column: x => x.FileId,
-                        principalTable: "Clients",
+                        name: "FK_Results_Files_FileName",
+                        column: x => x.FileName,
+                        principalTable: "Files",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -71,17 +71,17 @@ namespace ScienceFileUploader.Migrations
                 {
                     table.PrimaryKey("PK_Values", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Values_Clients_FileName",
+                        name: "FK_Values_Files_FileName",
                         column: x => x.FileName,
-                        principalTable: "Clients",
+                        principalTable: "Files",
                         principalColumn: "Name",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_FileId",
-                table: "Orders",
-                column: "FileId",
+                name: "IX_Results_FileName",
+                table: "Results",
+                column: "FileName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -94,13 +94,13 @@ namespace ScienceFileUploader.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "Results");
 
             migrationBuilder.DropTable(
                 name: "Values");
 
             migrationBuilder.DropTable(
-                name: "Clients");
+                name: "Files");
         }
     }
 }

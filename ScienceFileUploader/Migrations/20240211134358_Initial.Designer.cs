@@ -11,7 +11,7 @@ using ScienceFileUploader.Data;
 namespace ScienceFileUploader.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240210234633_Initial")]
+    [Migration("20240211134358_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -40,7 +40,7 @@ namespace ScienceFileUploader.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("ScienceFileUploader.Entities.Result", b =>
@@ -58,7 +58,7 @@ namespace ScienceFileUploader.Migrations
                     b.Property<double>("AvgExperimentDuration")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("FileId")
+                    b.Property<int>("FileName")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("FirstExperimentTime")
@@ -84,10 +84,10 @@ namespace ScienceFileUploader.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FileId")
+                    b.HasIndex("FileName")
                         .IsUnique();
 
-                    b.ToTable("Orders");
+                    b.ToTable("Results");
                 });
 
             modelBuilder.Entity("ScienceFileUploader.Entities.Value", b =>
@@ -120,7 +120,7 @@ namespace ScienceFileUploader.Migrations
                 {
                     b.HasOne("ScienceFileUploader.Entities.File", "File")
                         .WithOne("Result")
-                        .HasForeignKey("ScienceFileUploader.Entities.Result", "FileId")
+                        .HasForeignKey("ScienceFileUploader.Entities.Result", "FileName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

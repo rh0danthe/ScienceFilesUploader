@@ -16,7 +16,7 @@ namespace ScienceFileUploader.Entities
         public int MaxParameterValue { get; set; }
         public int MinParameterValue { get; set; }
         public int AmountOfExperiments { get; set; }
-        public int FileId { get; set; }
+        public int FileName { get; set; }
         public File File { get; set; }
     }
 }
