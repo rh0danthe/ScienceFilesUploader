@@ -25,17 +25,12 @@ namespace ScienceFileUploader.Repository
             return dbValue.Entity;
         }
 
-        public async Task<Value> GetByIdAsync(int valueId)
+        public async Task<ICollection<Value>> GetAllByFileNameAsync(string fileName)
         {
-            var dbValue = await _context.Values.FindAsync(valueId);
-            if (dbValue == null)
-                throw new ValueNotFoundException("This Id does not exist");
-            return dbValue;
-        }
-
-        public async Task<ICollection<Value>> GetAllAsync()
-        {
-            return await _context.Values.OrderBy(r => r.Id).ToListAsync();
+            var values = await _context.Values.Where(v => v.FileName == fileName).ToListAsync();
+            if (values == null)
+                throw new ValueNotFoundException("File with this name does not exist");
+            return values;
         }
     }
 }

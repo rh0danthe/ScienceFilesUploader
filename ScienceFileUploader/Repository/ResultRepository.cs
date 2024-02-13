@@ -40,7 +40,7 @@ namespace ScienceFileUploader.Repository
 
         public async Task<Result> GetByFileNameAsync(string name)
         {
-            var dbResult = await _context.Results.FirstOrDefaultAsync(r => r.FileName.Equals(name));
+            var dbResult = await _context.Results.FirstOrDefaultAsync(r => r.FileName == name);
             if (dbResult == null)
                 throw new ResultNotFoundException("Result with such filename does not exist");
             return dbResult;
@@ -48,16 +48,22 @@ namespace ScienceFileUploader.Repository
 
         public async Task<ICollection<Result>> GetAllByParametersAsync(int minParameter, int maxParameter)
         {
-            return await _context.Results
+            var results =  await _context.Results
                 .Where(r => minParameter < r.AvgByParameters && r.AvgByParameters < maxParameter)
                 .OrderBy(r => r.Id).ToListAsync();
+            if (results == null)
+                throw new ResultNotFoundException("Result with such average parameter range does not exist");
+            return results;
         }
 
         public async Task<ICollection<Result>> GetAllByTimeAsync(int minTime, int maxTime)
         {
-            return await _context.Results
+            var results = await _context.Results
                 .Where(r => minTime < r.AvgExperimentDuration && r.AvgExperimentDuration < maxTime)
                 .OrderBy(r => r.Id).ToListAsync();
+            if (results == null)
+                throw new ResultNotFoundException("Result with such average time range does not exist");
+            return results;
         }
     }
 }

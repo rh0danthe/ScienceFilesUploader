@@ -2,9 +2,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ScienceFileUploader.BackgroundWorker;
 using ScienceFileUploader.Data;
 using ScienceFileUploader.Repository;
 using ScienceFileUploader.Repository.Interface;
+using ScienceFileUploader.Service;
+using ScienceFileUploader.Service.Interface;
+using ValueRepository = ScienceFileUploader.Repository.ValueRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +21,10 @@ builder.Services.AddDbContext<DataContext>();
 builder.Services.AddScoped<IFileRepository, FileRepository>();
 builder.Services.AddScoped<IResultRepository, ResultRepository>();
 builder.Services.AddScoped<IValueRepository, ValueRepository>();
+builder.Services.AddScoped<IFileService, FileService>();
+builder.Services.AddScoped<IResultService, ResultService>();
+builder.Services.AddScoped<IValueService, ValueService>();
+builder.Services.AddSingleton<FileStorageQueue>();
 
 var app = builder.Build();
 

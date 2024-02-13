@@ -7,7 +7,6 @@ namespace ScienceFileUploader.Repository.Interface
     public interface IValueRepository
     {
         public Task<Value> CreateAsync(Value value);
-        public Task<Value> GetByIdAsync(int valueId);
-        public Task<ICollection<Value>> GetAllAsync();
+        public Task<ICollection<Value>> GetAllByFileNameAsync(string fileName);
     }
 }

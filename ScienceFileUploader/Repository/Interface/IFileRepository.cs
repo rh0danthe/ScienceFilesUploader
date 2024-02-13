@@ -7,5 +7,7 @@ namespace ScienceFileUploader.Repository.Interface
     {
         public Task<File> CreateAsync(File file);
         public Task<File> GetByIdAsync(int fileId);
+        public Task<bool> IfExistByNameAsync(string fileName);
+        public Task<bool> DeleteAsync(string name);
     }
 }

@@ -17,9 +17,7 @@ namespace ScienceFileUploader.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Type = table.Column<string>(type: "TEXT", nullable: false),
-                    Content = table.Column<byte[]>(type: "BLOB", nullable: false)
+                    Name = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -40,10 +38,10 @@ namespace ScienceFileUploader.Migrations
                     AvgExperimentDuration = table.Column<double>(type: "REAL", nullable: false),
                     AvgByParameters = table.Column<double>(type: "REAL", nullable: false),
                     MedianByParameters = table.Column<double>(type: "REAL", nullable: false),
-                    MaxParameterValue = table.Column<int>(type: "INTEGER", nullable: false),
-                    MinParameterValue = table.Column<int>(type: "INTEGER", nullable: false),
+                    MaxParameterValue = table.Column<double>(type: "REAL", nullable: false),
+                    MinParameterValue = table.Column<double>(type: "REAL", nullable: false),
                     AmountOfExperiments = table.Column<int>(type: "INTEGER", nullable: false),
-                    FileName = table.Column<int>(type: "INTEGER", nullable: false)
+                    FileName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -52,7 +50,7 @@ namespace ScienceFileUploader.Migrations
                         name: "FK_Results_Files_FileName",
                         column: x => x.FileName,
                         principalTable: "Files",
-                        principalColumn: "Id",
+                        principalColumn: "Name",
                         onDelete: ReferentialAction.Cascade);
                 });
 

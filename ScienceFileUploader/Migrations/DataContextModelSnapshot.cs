@@ -23,15 +23,7 @@ namespace ScienceFileUploader.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<byte[]>("Content")
-                        .IsRequired()
-                        .HasColumnType("BLOB");
-
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -55,8 +47,9 @@ namespace ScienceFileUploader.Migrations
                     b.Property<double>("AvgExperimentDuration")
                         .HasColumnType("REAL");
 
-                    b.Property<int>("FileName")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FirstExperimentTime")
                         .HasColumnType("TEXT");
@@ -67,8 +60,8 @@ namespace ScienceFileUploader.Migrations
                     b.Property<int>("MaxExperimentDuration")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MaxParameterValue")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("MaxParameterValue")
+                        .HasColumnType("REAL");
 
                     b.Property<double>("MedianByParameters")
                         .HasColumnType("REAL");
@@ -76,8 +69,8 @@ namespace ScienceFileUploader.Migrations
                     b.Property<int>("MinExperimentDuration")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("MinParameterValue")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("MinParameterValue")
+                        .HasColumnType("REAL");
 
                     b.HasKey("Id");
 
@@ -118,6 +111,7 @@ namespace ScienceFileUploader.Migrations
                     b.HasOne("ScienceFileUploader.Entities.File", "File")
                         .WithOne("Result")
                         .HasForeignKey("ScienceFileUploader.Entities.Result", "FileName")
+                        .HasPrincipalKey("ScienceFileUploader.Entities.File", "Name")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

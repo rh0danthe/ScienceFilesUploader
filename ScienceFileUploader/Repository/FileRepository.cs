@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ScienceFileUploader.Data;
 using ScienceFileUploader.Entities;
 using ScienceFileUploader.Exceptions.File;
@@ -29,6 +31,21 @@ namespace ScienceFileUploader.Repository
             if (dbFile == null)
                 throw new FileNotFoundException("This Id does not exist");
             return dbFile;
+        }
+
+        public async Task<bool> IfExistByNameAsync(string fileName)
+        {
+            return await _context.Files.FirstOrDefaultAsync(f => f.Name == fileName) != null;
+        }
+
+        public async Task<bool> DeleteAsync(string fileName)
+        {
+            var dbFile = await _context.Files.FirstOrDefaultAsync(f => f.Name == fileName);
+            if (dbFile == null)
+                throw new FileNotFoundException("File with this name does not exist");
+            var res = _context.Files.Remove(dbFile);
+            await _context.SaveChangesAsync();
+            return res.State == EntityState.Deleted;
         }
     }
 }

@@ -23,7 +23,8 @@ namespace ScienceFileUploader.Data
         {
             modelBuilder.Entity<Result>()
                 .HasOne<File>(r => r.File)
-                .WithOne(f => f.Result)
+                .WithOne(f => f.Result).HasPrincipalKey<File>(f => f.Name)
+                .IsRequired()
                 .HasForeignKey<Result>(r => r.FileName)
                 .IsRequired();
             
