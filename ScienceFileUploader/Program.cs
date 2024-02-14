@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ScienceFileUploader.BackgroundWorker;
 using ScienceFileUploader.Data;
+using ScienceFileUploader.Middleware;
 using ScienceFileUploader.Repository;
 using ScienceFileUploader.Repository.Interface;
 using ScienceFileUploader.Service;
@@ -25,6 +27,9 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IResultService, ResultService>();
 builder.Services.AddScoped<IValueService, ValueService>();
 builder.Services.AddSingleton<FileStorageQueue>();
+builder.Services.AddHostedService<FileProcessingWorker>();
+builder.Services.AddScoped<ExceptionMiddleware>();
+
 
 var app = builder.Build();
 
@@ -38,6 +43,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>(); 
 
 app.UseHttpsRedirection();
 

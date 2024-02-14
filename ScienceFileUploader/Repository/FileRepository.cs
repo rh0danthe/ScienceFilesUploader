@@ -33,6 +33,14 @@ namespace ScienceFileUploader.Repository
             return dbFile;
         }
 
+        public async Task<File> GetByNameAsync(string fileName)
+        {
+            var dbFile = await _context.Files.FirstOrDefaultAsync(f => f.Name == fileName);
+            if (dbFile == null)
+                throw new FileNotFoundException("file with this name does not exist");
+            return dbFile;
+        }
+
         public async Task<bool> IfExistByNameAsync(string fileName)
         {
             return await _context.Files.FirstOrDefaultAsync(f => f.Name == fileName) != null;

@@ -1,19 +1,26 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Threading;
+using System.Threading.Tasks;
 using ScienceFileUploader.Dto;
 
 namespace ScienceFileUploader.BackgroundWorker
 {
     public class FileStorageQueue
     {
-        private readonly Queue<FileRequest> _queue = new();
+        private readonly ConcurrentQueue<FileRequest> _queue = new();
+        private SemaphoreSlim _signal = new SemaphoreSlim(0);
 
         public void AddFile(FileRequest file)
         {
             _queue.Enqueue(file);
+            _signal.Release();
         }
-        public FileRequest GetFile()
+        public async Task<FileRequest> GetFileAsync(CancellationToken cancellationToken)
         {
-            return _queue.Dequeue();
+            await _signal.WaitAsync(cancellationToken);
+            _queue.TryDequeue(out var file);
+            return file;
         }
     }
 }
